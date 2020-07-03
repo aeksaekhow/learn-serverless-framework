@@ -1,10 +1,10 @@
 import AWS from 'aws-sdk'
-import middyMiddleware from '../libs/middyMiddleware'
+import {middyMiddleware} from '../libs/middyMiddleware'
 import createError from 'http-errors'
 
 const dynamodb = new AWS.DynamoDB.DocumentClient()
 
-async function getAuctions(event, context) {
+export const handler = middyMiddleware(async (event, context) => {
 
     let auctions;
 
@@ -22,6 +22,4 @@ async function getAuctions(event, context) {
         statusCode: 200,
         body: JSON.stringify(auctions),
     }
-}
-
-export const handler = middyMiddleware(getAuctions)
+})

@@ -1,11 +1,12 @@
 import {v4 as uuid} from 'uuid'
 import AWS from 'aws-sdk'
-import middyMiddleware from '../libs/middyMiddleware'
+import {middyMiddleware} from '../libs/middyMiddleware'
 import createError from 'http-errors'
 
 const dynamodb = new AWS.DynamoDB.DocumentClient()
 
-async function createAuction(event, context) {
+
+export const handler = middyMiddleware(async (event, context) => {
 
   const {title} = event.body
   const now = new Date()
@@ -35,6 +36,4 @@ async function createAuction(event, context) {
     statusCode: 201,
     body: JSON.stringify(auction),
   }
-}
-
-export const handler = middyMiddleware(createAuction)
+})

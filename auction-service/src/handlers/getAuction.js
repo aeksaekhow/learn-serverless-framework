@@ -1,14 +1,22 @@
 import AWS from 'aws-sdk'
-import middyMiddleware from '../libs/middyMiddleware'
+import {middyMiddleware} from '../libs/middyMiddleware'
 import createError from 'http-errors'
 
 const dynamodb = new AWS.DynamoDB.DocumentClient()
 
-async function getAuction(event, context) {
+export const handler = middyMiddleware(async (event, context) => {
 
-    let auction;
     const { id } = event.pathParameters
+    const auction = await getAuctionById(id)
 
+    return {
+        statusCode: 200,
+        body: JSON.stringify(auction),
+    }
+})
+
+export const getAuctionById = async (id) => {
+    let auction;
     try {
         const result = await dynamodb.get({
             TableName: process.env.AUCTIONS_TABLE_NAME,
@@ -25,10 +33,5 @@ async function getAuction(event, context) {
         throw new createError.NotFound(`Auction with "${id}" not found`)
     }
 
-    return {
-        statusCode: 200,
-        body: JSON.stringify(auction),
-    }
+    return auction
 }
-
-export const handler = middyMiddleware(getAuction)
