@@ -1,8 +1,10 @@
 import AWS from 'aws-sdk'
+import {getEndedAuctions} from '../libs/getEndedAuctions'
 
 const dynamodb = new AWS.DynamoDB.DocumentClient()
 
 export const handler = async (event, context) => {
 
-    console.log('Process auctions ' + new Date().toISOString())
+    const endedAuctions = await getEndedAuctions()    
+    console.log('Ended auctions', endedAuctions)
 }
