@@ -3,7 +3,7 @@ import httpErrorHandler from '@middy/http-error-handler'
 import httpEventNormalizer from '@middy/http-event-normalizer'
 import httpJsonBodyParser from '@middy/http-json-body-parser'
 
-export const middyMiddleware = (handler) => middy(handler)
+export const useDefaultMiddyMiddlewares = (handler) => middy(handler)
     .use(httpErrorHandler())
     .use(httpEventNormalizer())
     .use(httpJsonBodyParser())

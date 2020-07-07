@@ -1,11 +1,11 @@
 import AWS from 'aws-sdk'
-import { middyMiddleware } from '../libs/middyMiddleware'
+import { useDefaultMiddyMiddlewares } from '../libs/useDefaultMiddyMiddlewares'
 import createError from 'http-errors'
 import { getAuctionById } from './getAuction'
 
 const dynamodb = new AWS.DynamoDB.DocumentClient()
 
-export const handler = middyMiddleware(async (event, context) => {
+export const handler = useDefaultMiddyMiddlewares(async (event, context) => {
 
     const { id } = event.pathParameters
     const { amount } = event.body

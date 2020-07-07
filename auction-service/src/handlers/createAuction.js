@@ -1,12 +1,12 @@
 import {v4 as uuid} from 'uuid'
 import AWS from 'aws-sdk'
-import {middyMiddleware} from '../libs/middyMiddleware'
+import {useDefaultMiddyMiddlewares} from '../libs/useDefaultMiddyMiddlewares'
 import createError from 'http-errors'
 
 const dynamodb = new AWS.DynamoDB.DocumentClient()
 
 
-export const handler = middyMiddleware(async (event, context) => {
+export const handler = useDefaultMiddyMiddlewares(async (event, context) => {
 
   const {title} = event.body
   const now = new Date()

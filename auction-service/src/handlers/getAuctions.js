@@ -1,10 +1,12 @@
 import AWS from 'aws-sdk'
-import { middyMiddleware } from '../libs/middyMiddleware'
+import { useDefaultMiddyMiddlewares } from '../libs/useDefaultMiddyMiddlewares'
 import createError from 'http-errors'
+import validator from '@middy/validator'
+import getAuctionsSchema from '../libs/schemas/getAuctionsSchema'
 
 const dynamodb = new AWS.DynamoDB.DocumentClient()
 
-export const handler = middyMiddleware(async (event, context) => {
+const handlerFunc = async (event, context) => {
 
     let status;
     if (event.queryStringParameters.status) {
@@ -43,4 +45,6 @@ export const handler = middyMiddleware(async (event, context) => {
         statusCode: 200,
         body: JSON.stringify(auctions),
     }
-})
+}
+
+export const handler = useDefaultMiddyMiddlewares(handlerFunc).use(validator({inputSchema: getAuctionsSchema, ajvOptions: {useDefaults: true}}))

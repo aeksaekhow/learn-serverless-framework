@@ -21,4 +21,4 @@ AuctionsTable:
           - AttributeName: endingAt
             KeyType: RANGE
         Projection:
-            ProjectionType: ALL
+          ProjectionType: ALL
