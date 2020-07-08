@@ -1,3 +1,5 @@
+org: aeksaekhow
+app: my-first-app
 service:
   name: auction-service
 
@@ -10,7 +12,8 @@ provider:
   runtime: nodejs12.x
   memorySize: 256
   stage: ${opt:stage, 'dev'}
-  region: ap-southeast-1
+  region: us-east-1
+  profile: aeksaekhow
   environment:
     AUCTIONS_TABLE_NAME: ${self:custom.AuctionsTable.name}
   iamRoleStatements:

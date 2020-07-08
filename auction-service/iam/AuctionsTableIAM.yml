@@ -6,7 +6,7 @@ AuctionsTableIAM:
     - dynamodb:GetItem
     - dynamodb:UpdateItem
     - dynamodb:Query
-    - dynamodb.Update
+    - dynamodb:Update
   Resource:
     - ${self:custom.AuctionsTable.arn}
     - !Join [
