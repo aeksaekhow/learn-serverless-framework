@@ -4,7 +4,9 @@ import jwt from 'jsonwebtoken';
 // This policy will authorize all requests to the same API Gateway instance where the
 // request is coming from, thus being efficient and optimising costs.
 const generatePolicy = (principalId, methodArn) => {
+  console.log('methodArn', methodArn)
   const apiGatewayWildcard = methodArn.split('/', 2).join('/') + '/*';
+  console.log('apiGatewayWildcard', apiGatewayWildcard)
 
   return {
     principalId,
@@ -31,6 +33,7 @@ export async function handler(event, context) {
   try {
     const claims = jwt.verify(token, process.env.AUTH0_PUBLIC_KEY);
     const policy = generatePolicy(claims.sub, event.methodArn);
+    console.log('claims', claims)
 
     return {
       ...policy,
