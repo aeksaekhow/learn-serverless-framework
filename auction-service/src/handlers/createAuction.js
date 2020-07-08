@@ -2,11 +2,12 @@ import {v4 as uuid} from 'uuid'
 import AWS from 'aws-sdk'
 import {useDefaultMiddyMiddlewares} from '../libs/useDefaultMiddyMiddlewares'
 import createError from 'http-errors'
+import validator from '@middy/validator'
+import createAuctionSchema from '../libs/schemas/createAuctionSchema'
 
 const dynamodb = new AWS.DynamoDB.DocumentClient()
 
-
-export const handler = useDefaultMiddyMiddlewares(async (event, context) => {
+const handlerFunc = async (event, context) => {
 
   const {title} = event.body
   const now = new Date()
@@ -39,4 +40,6 @@ export const handler = useDefaultMiddyMiddlewares(async (event, context) => {
     statusCode: 201,
     body: JSON.stringify(auction),
   }
-})
+}
+
+export const handler = useDefaultMiddyMiddlewares(handlerFunc).use(validator({inputSchema: createAuctionSchema}))

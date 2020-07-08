@@ -2,10 +2,12 @@ import AWS from 'aws-sdk'
 import { useDefaultMiddyMiddlewares } from '../libs/useDefaultMiddyMiddlewares'
 import createError from 'http-errors'
 import { getAuctionById } from './getAuction'
+import validator from '@middy/validator'
+import placeBidSchema from '../libs/schemas/placeBidSchema'
 
 const dynamodb = new AWS.DynamoDB.DocumentClient()
 
-export const handler = useDefaultMiddyMiddlewares(async (event, context) => {
+const handlerFunc = async (event, context) => {
 
     const { id } = event.pathParameters
     const { amount } = event.body
@@ -45,4 +47,6 @@ export const handler = useDefaultMiddyMiddlewares(async (event, context) => {
         statusCode: 200,
         body: JSON.stringify(updatedAuction),
     }
-})
+}
+
+export const handler = useDefaultMiddyMiddlewares(handlerFunc).use(validator({inputSchema: placeBidSchema}))
